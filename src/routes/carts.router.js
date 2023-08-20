@@ -1,5 +1,5 @@
 import { Router } from "express";
-import {cartManager} from "../dao/cartsManager.js";
+import { cartsMongo } from "../dao/cartsMongo.js";
 
 const router = Router()
 
@@ -7,9 +7,12 @@ const router = Router()
 router.get("/:cid", async (req, res) => {
     const { cid } = req.params;
     try {
-      const cart = await cartManager.getCart(+cid)
+      if(!product){
+        res.status(400).json({message:'id invalido'})
+        }else{
+      const cart = await cartsMongo.getCart(+cid)
       res.status(200).json({message:'Products', cart})
-    }
+    }}
     catch (erro){
       res.status(500).json({message: "Error interno del servidor"});
     }
@@ -17,7 +20,7 @@ router.get("/:cid", async (req, res) => {
  
   router.post('/',async(req,res )=>{
     try{
-    const createCart = await cartManager.createCart()
+    const createCart = await cartsMongo.createCart()
     res.status(200).json({message: 'Carts', cart:createCart})
   }
   catch (error){
@@ -27,7 +30,7 @@ router.get("/:cid", async (req, res) => {
   router.post('/:cid/product/:pid',async(req,res )=>{
     const {cid, pid} = req.params
     try{
-    const addProduct = await cartManager.addCart(+cid, +pid)
+    const addProduct = await cartsMongo.addCart(+cid, +pid)
     res.status(200).json({message: 'producto agregado', cart:addProduct})
   }
   catch (error){
