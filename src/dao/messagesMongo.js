@@ -1,8 +1,8 @@
-import { messagesModels } from "./models/messages.model"
+import { messagesModels } from "./models/messages.model.js"
 
 class MessagesMongo {
 
-    async getmessages (){
+    async getMessages (){
         try{
         const messages = await messagesModels.find({})
         return messages
@@ -11,7 +11,7 @@ class MessagesMongo {
             return error
         }
     }
-    async addmessages (obj){
+    async addMessages (obj){
         try{
         const newmessage = await messagesModels.create(obj)
         return newmessage

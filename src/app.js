@@ -5,7 +5,7 @@ import cartsRouter from './routes/carts.router.js';
 import { __dirname } from "./utils.js";
 import './dao/db/dbConfig.js'
 import messages from "./routes/messages.router.js";
-import Server from 'socket.io'
+import { Server } from "socket.io";
 
 
 const app = express();
@@ -20,8 +20,12 @@ app.set('view engine','handlebars')
 
 app.use('/api/products', productsRouter);
 app.use('/api/carts', cartsRouter);
-app.use('/api/views', viewsRouter)
+app.use('/api/message', messages)
 
+
+app.get('/chat', (req, res) => {
+  res.render('chat');
+});
 
 
 
@@ -39,9 +43,14 @@ socketServer.on('connection', socket=>{
   socket.on('disconnect',()=>{
     console.log(`usuario desconectado: ${socket.id}`);
   })
+
+  socket.on('message', async infoMensaje => {
+    try {
+      await messagesMongo.addMessages(infoMensaje);
+      const allMessages = await messagesMongo.getMessages();
+      socketServer.emit('messages', allMessages);
+    } catch (error) {
+      console.error(error);
+    }
 })
-socket.on('message',infoMensaje=>{
-  //me fatlta codigo
-  socketServer.emit('messages', messages)
-}
-)
+})
