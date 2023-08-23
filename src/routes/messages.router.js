@@ -3,6 +3,10 @@ import { messagesMongo } from '../dao/messagesMongo.js';
 
 const router = Router();
 
+app.get('/chat', (req, res) => {
+  res.render('chat');
+});
+
 router.get('/', async (req, res) => {
   try {
     const messages = await messagesMongo.getMessages();

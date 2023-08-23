@@ -23,13 +23,6 @@ app.use('/api/carts', cartsRouter);
 app.use('/api/message', messages)
 
 
-app.get('/chat', (req, res) => {
-  res.render('chat');
-});
-
-
-
-
 const port = 8081;
 
 const httpServer = app.listen(port, () => {

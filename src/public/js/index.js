@@ -1,5 +1,3 @@
-// index.js
-
 const socketClient = io();
 
 const email = document.getElementById('email');
